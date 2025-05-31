@@ -22,12 +22,7 @@ Have you ever been touched by the songs from movies you've watched and wanted to
 2. Open [chrome://extensions/](chrome://extensions/) in Chrome.
 3. Enable **Developer Mode** (top right).
 4. Click **Load unpacked** and select the project folder.
-5. Make sure you've added your credentials in `secret.config.js`:
-   ```js
-   export const clientId = "YOUR_SPOTIFY_CLIENT_ID";
-   export const chromeExtensionID = "YOUR_EXTENSION_ID";
-   export const playlistID = "YOUR_SPOTIFY_PLAYLIST_ID";
-   ```
+5. Make sure you've replaced your credentials to the corresponding ID variables in contentScript.js and background.js. There are 3 variables in total: playlistID is in contentScript.js, and chromeExtensionID and clientId is in background.js .
 
 ---
 
@@ -36,7 +31,7 @@ Have you ever been touched by the songs from movies you've watched and wanted to
 1. The content script detects video title and monitors playback time.
 2. When the video has 5 minutes or less remaining:
    - Wikipedia is queried.
-   - If it's a valid film/anime/etc, the extension fetches the theme song from Spotify.
+   - If it's a valid film/drama/etc, the extension fetches the theme song from Spotify.
    - A prompt asks if you’d like to add the song to your playlist.
 3. All handled movies are stored in-memory (per session) to avoid duplicate prompts.
 
@@ -57,7 +52,7 @@ Have you ever been touched by the songs from movies you've watched and wanted to
 ├── background.js
 ├── contentScript.js
 ├── manifest.json
-├── constant.js # ← Not committed, holds sensitive keys
+├── constants.js # ← Not committed, holds sensitive keys
 └── README.md
 
 ---

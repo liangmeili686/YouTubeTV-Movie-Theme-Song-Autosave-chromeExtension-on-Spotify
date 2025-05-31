@@ -1,4 +1,3 @@
-import { playlistID } from './constants.js';
 window.hasTriggered = false;
 window.currentTitle = "";
 
@@ -35,6 +34,17 @@ function getSpotifyToken() {
         });
     });
 }
+
+//get playlist ID
+/*
+function getPlaylistID() {
+    return new Promise((resolve) => {
+        chrome.runtime.sendMessage({ type: "GET_PLAYLIST_ID" }, (response) => {
+        resolve(response.playlistID);
+        });
+    });
+}
+*/
 
 //get title
 async function getCurrentTitle() {
@@ -212,9 +222,10 @@ async function searchSpotifyTrack(title, accessToken) {
 }
 
 //add song into spotify playlist
-async function addSong(songURI, accessToken){
-    //put into the sample playlist
-    playlistID = "Your-playlist-id"
+async function addSong(songURI, accessToken) {
+    // const playlistID = await getPlaylistID();
+    const playlistID = "YOUR PLAYLIST ID";
+
     const playlist = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {
         method: "POST",
         headers: {
@@ -229,6 +240,7 @@ async function addSong(songURI, accessToken){
 
     return playlist;
 }
+
 
 //wait for DOM and ad to be ready
 function getCurrentTitleDelayed() {

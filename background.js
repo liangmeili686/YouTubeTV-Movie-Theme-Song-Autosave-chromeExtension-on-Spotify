@@ -1,7 +1,8 @@
-import { chromeExtensionID, clientId } from './constants.js';
+//import { chromeExtensionID, clientId } from './constants.js';
 let handledMovies = [];
 
 chrome.runtime.onInstalled.addListener(async () => {
+    console.log("1");
     const manifest = chrome.runtime.getManifest();
 
     for (const cs of manifest.content_scripts) {
@@ -29,6 +30,7 @@ chrome.runtime.onInstalled.addListener(async () => {
             });
         }
     }
+    console.log("2");
 });
 
 
@@ -68,13 +70,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
         return true;
     }
+
+    /*
+    if (request.type === "GET_PLAYLIST_ID") {
+        sendResponse({ playlistID });
+        return true;
+    }
+    */
     
 });
 
-
-
-const clientId = 'Your-client-id';
-const chromeExtensionID = "Your-extension-id"
+const clientId = "YOUR CLIENT ID";
+const chromeExtensionID = "CHROME EXTENSION ID";
 const redirectUri = `https://${chromeExtensionID}.chromiumapp.org/callback`;
 const scopes = 'playlist-modify-public user-read-private';
 
@@ -84,6 +91,7 @@ function generateCodeVerifier(length = 128) {
     for (let i = 0; i < length; i++) {
         verifier += chars.charAt(Math.floor(Math.random() * chars.length));
     }
+    console.log("3");
     return verifier;
 }
 
@@ -91,11 +99,13 @@ async function generateCodeChallenge(codeVerifier) {
     const encoder = new TextEncoder();
     const data = encoder.encode(codeVerifier);
     const digest = await crypto.subtle.digest('SHA-256', data);
+    console.log("4");
     return btoa(String.fromCharCode(...new Uint8Array(digest)))
         .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
 async function startSpotifyAuth() {
+    console.log("5, auth started");
     const verifier = generateCodeVerifier();
     const challenge = await generateCodeChallenge(verifier);
 
@@ -124,9 +134,11 @@ async function startSpotifyAuth() {
             }
         );
     });
+    console.log("6");
 }
 
 async function exchangeToken(authCode) {
+    console.log("7");
     chrome.storage.local.get("verifier", async (result) => {
         const verifier = result.verifier;
 
@@ -157,9 +169,11 @@ async function exchangeToken(authCode) {
             console.error("Token exchange failed:", tokenResponse);
         }
     });
+    console.log("8");
 }
 
 async function getValidAccessToken() {
+    console.log("9");
     return new Promise((resolve) => {
         chrome.storage.local.get(["access_token", "refresh_token", "expires_at"], async (tokens) => {
             if (tokens.access_token && Date.now() < tokens.expires_at) {
