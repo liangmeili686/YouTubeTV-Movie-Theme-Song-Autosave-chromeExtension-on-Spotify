@@ -1,0 +1,30 @@
+{
+  "name": "ThemeSongFinder",
+  "version": "0.1.0",
+  "description": "Saving the opening, ending, or theme song of a movie/anime/tvshow on YouTube",
+  "manifest_version": 3,
+  "permissions": [
+    "storage",
+    "tabs",
+    "scripting",
+    "identity"
+  ],
+  "host_permissions": [
+    "https://*.wikipedia.org/*",
+    "https://*.youtube.com/*",
+    "https://api.spotify.com/*",
+    "https://accounts.spotify.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Check Video Type"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.youtube.com/*"],
+      "js": ["contentScript.js"]
+    }
+  ]
+}
